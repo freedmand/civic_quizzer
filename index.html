@@ -32,7 +32,7 @@
   for (let i = 1; i <= 100; i++) {
     const div = document.createElement("div");
     const img = document.createElement("img");
-    img.src = `/questions/${i}.png`;
+    img.src = `./questions/${i}.png`;
     img.dataset.index = i;
     img.style.width = img.width * 0.5;
     const clip = clipPaths[i] || clipPathDefault;
