@@ -1,0 +1,91 @@
+<head>
+  <title>Civic Quizzer</title>
+  <style>
+    div {
+      margin: 3px 20px;
+      padding: 10px;
+      border: solid 2px transparent;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    div.expended {
+      opacity: 0.5;
+    }
+
+    div:hover {
+      border-left: dashed 2px rgb(18, 80, 179);
+    }
+
+    div.expanded:hover {
+      border: dashed 2px rgb(18, 80, 179);
+    }
+  </style>
+</head>
+<body></body>
+<script>
+  const imgs = [];
+  const clipPathDefault = 25;
+  const clipPaths = {
+    41: 56,
+  };
+  for (let i = 1; i <= 100; i++) {
+    const div = document.createElement("div");
+    const img = document.createElement("img");
+    img.src = `/questions/${i}.png`;
+    img.dataset.index = i;
+    img.style.width = img.width * 0.5;
+    const clip = clipPaths[i] || clipPathDefault;
+    img.style.clipPath = `polygon(0 0, 100% 0, 100% ${clip}px, 0 ${clip}px)`;
+    img.style.height = clip;
+    img.style.objectFit = "cover";
+    img.style.objectPosition = "top";
+    img.style.display = "block";
+    img.draggable = false;
+    div.onclick = () => {
+      if (div.classList.contains("expanded")) {
+        img.style.clipPath = `polygon(0 0, 100% 0, 100% ${clip}px, 0 ${clip}px)`;
+        img.style.height = clip;
+        div.classList.remove("expanded");
+        div.classList.add("expended");
+      } else {
+        img.style.clipPath = "";
+        img.style.height = "auto";
+        div.classList.add("expanded");
+      }
+    };
+    div.appendChild(img);
+    document.body.appendChild(div);
+    imgs.push(div);
+  }
+
+  function shuffle(l) {
+    for (let i = 0; i < l.length; i++) {
+      const j = Math.floor(Math.random() * l.length);
+      const temp = l[i];
+      l[i] = l[j];
+      l[j] = temp;
+    }
+  }
+
+  const randomizer = document.createElement("button");
+  randomizer.innerText = "Randomize";
+  randomizer.onclick = () => {
+    // Shuffle imgs
+    shuffle(imgs);
+    for (const div of imgs) {
+      document.body.appendChild(div);
+      div.classList.remove("expended");
+      div.classList.remove("expanded");
+      const img = div.children[0];
+      const i = img.dataset.index;
+      const clip = clipPaths[i] || clipPathDefault;
+      img.style.clipPath = `polygon(0 0, 100% 0, 100% ${clip}px, 0 ${clip}px)`;
+      img.style.height = clip;
+    }
+  };
+  randomizer.style.position = "fixed";
+  randomizer.style.top = "0";
+  randomizer.style.right = "0";
+  document.body.appendChild(randomizer);
+</script>
