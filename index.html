@@ -92,15 +92,15 @@
     .button-container {
       position: sticky;
       top: 10px;
+      padding-right: 10px;
+      box-sizing: border-box;
       width: 100vw;
       text-align: right;
       z-index: 10;
+      margin: -10px;
     }
 
     button {
-      position: sticky;
-      top: 10px;
-      right: 10px;
       font-size: 20px;
       background: rgb(14, 72, 166);
       color: white;
@@ -133,6 +133,7 @@
     </p>
   </header>
   <div class="button-container">
+    <button id="reset">Reset</button>
     <button id="randomizer">Randomize</button>
   </div>
 </body>
@@ -173,6 +174,19 @@
   randomizer.onclick = () => {
     // Shuffle imgs
     shuffle(imgs);
+    for (const div of imgs) {
+      document.body.appendChild(div);
+      div.classList.remove("expended");
+      div.classList.remove("expanded");
+    }
+  };
+  const reset = document.getElementById("reset");
+  reset.onclick = () => {
+    imgs.sort(
+      (a, b) =>
+        parseInt(a.firstChild.dataset.index) -
+        parseInt(b.firstChild.dataset.index)
+    );
     for (const div of imgs) {
       document.body.appendChild(div);
       div.classList.remove("expended");
