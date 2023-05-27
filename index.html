@@ -1,12 +1,36 @@
 <head>
   <title>Civic Quizzer</title>
   <style>
-    div {
-      margin: 3px 20px;
+    body {
+      width: max(100%, 800px);
+      margin: 0;
       padding: 10px;
+      box-sizing: border-box;
+    }
+
+    div {
+      margin: 10px 0;
       border: solid 2px transparent;
       cursor: pointer;
       user-select: none;
+      width: 100%;
+      padding-top: 2%;
+      box-sizing: border-box;
+      overflow-y: hidden;
+      overflow-x: visible;
+      position: relative;
+    }
+
+    div.expanded {
+      padding-top: 0 !important;
+    }
+
+    div.expanded img {
+      position: relative;
+    }
+
+    div.i41 {
+      padding-top: 5%;
     }
 
     div.expended {
@@ -20,37 +44,35 @@
     div.expanded:hover {
       border: dashed 2px rgb(18, 80, 179);
     }
+
+    img {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    button {
+      z-index: 10;
+    }
   </style>
 </head>
 <body></body>
 <script>
   const imgs = [];
-  const clipPathDefault = 25;
-  const clipPaths = {
-    41: 56,
-  };
   for (let i = 1; i <= 100; i++) {
     const div = document.createElement("div");
     const img = document.createElement("img");
     img.src = `./questions/${i}.png`;
     img.dataset.index = i;
-    img.style.width = img.width * 0.5;
-    const clip = clipPaths[i] || clipPathDefault;
-    img.style.clipPath = `polygon(0 0, 100% 0, 100% ${clip}px, 0 ${clip}px)`;
-    img.style.height = clip;
-    img.style.objectFit = "cover";
-    img.style.objectPosition = "top";
     img.style.display = "block";
     img.draggable = false;
+    div.classList.add(`i${i}`);
     div.onclick = () => {
       if (div.classList.contains("expanded")) {
-        img.style.clipPath = `polygon(0 0, 100% 0, 100% ${clip}px, 0 ${clip}px)`;
-        img.style.height = clip;
         div.classList.remove("expanded");
         div.classList.add("expended");
       } else {
-        img.style.clipPath = "";
-        img.style.height = "auto";
         div.classList.add("expanded");
       }
     };
@@ -77,11 +99,6 @@
       document.body.appendChild(div);
       div.classList.remove("expended");
       div.classList.remove("expanded");
-      const img = div.children[0];
-      const i = img.dataset.index;
-      const clip = clipPaths[i] || clipPathDefault;
-      img.style.clipPath = `polygon(0 0, 100% 0, 100% ${clip}px, 0 ${clip}px)`;
-      img.style.height = clip;
     }
   };
   randomizer.style.position = "fixed";
